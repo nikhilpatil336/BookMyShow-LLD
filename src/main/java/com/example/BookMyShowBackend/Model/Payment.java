@@ -5,11 +5,8 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@Builder
 public abstract class Payment extends BaseModel{
 
     private User user;
@@ -18,7 +15,7 @@ public abstract class Payment extends BaseModel{
     private PaymentType paymentType;
     private PaymentStatus paymentStatus;
 
-    Payment(PaymentType paymentType){
-        this.paymentType = paymentType;
-    }
+//    Payment(PaymentType paymentType){
+//        this.paymentType = paymentType;
+//    }
 }

@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class SeatType {
+public class SeatType extends BaseModel {
     private Theater theater;
     private String seatType;
 }

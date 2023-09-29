@@ -1,13 +1,13 @@
 package com.example.BookMyShowBackend.Model;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 public class BaseModel {
 
-    private int id;
+    private long id;
 }

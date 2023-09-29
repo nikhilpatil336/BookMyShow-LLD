@@ -4,7 +4,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@AllArgsConstructor
+//@AllArgsConstructor
 @Getter
 @Setter
 @Builder
@@ -15,8 +15,8 @@ public class DebitCard extends Payment{
     private LocalDate expiryDate;
     private int cvv;
 
-    public DebitCard()
-    {
-        super(PaymentType.DEBIT_CARD);
-    }
+//    public DebitCard()
+//    {
+//        super(PaymentType.DEBIT_CARD);
+//    }
 }
