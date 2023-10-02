@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface BookingService {
 
-    Booking createBooking(User user, Show show, List<ShowSeat> showSeats, long l);
+    Booking createBooking(User user, Show show, List<Long> showSeatsId, long l);
 }

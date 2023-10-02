@@ -12,19 +12,19 @@ public class BookingServiceRunMethod implements Callable<Booking> {
     private BookingService bookingService;
     private User user;
     private Show show;
-    private List<ShowSeat> showSeats;
+    private List<Long> showSeatsId;
     private long id;
 
-    public BookingServiceRunMethod(BookingService bookingService, User user, Show show, List<ShowSeat> showSeats, long id) {
+    public BookingServiceRunMethod(BookingService bookingService, User user, Show show, List<Long> showSeatsId, long id) {
         this.bookingService = bookingService;
         this.user = user;
         this.show = show;
-        this.showSeats = showSeats;
+        this.showSeatsId = showSeatsId;
         this.id = id;
     }
 
     @Override
     public Booking call() throws Exception {
-        return bookingService.createBooking(user, show, showSeats, id);
+        return bookingService.createBooking(user, show, showSeatsId, id);
     }
 }
