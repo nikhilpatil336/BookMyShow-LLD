@@ -2,12 +2,13 @@ package com.example.BookMyShowBackend.Repositories.InMemoryRepositories;
 
 import com.example.BookMyShowBackend.Model.ShowSeat;
 import com.example.BookMyShowBackend.Repositories.ShowSeatRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Repository
 public class InMemoryShowSeatRepository implements ShowSeatRepository {
 
     private Map<Long, ShowSeat> showSeatsMap = new HashMap<>();

@@ -12,5 +12,4 @@ import java.util.List;
 public class City extends BaseModel{
     private String name;
     List<Theater> theaters;
-
 }

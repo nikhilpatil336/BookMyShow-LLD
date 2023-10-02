@@ -1,12 +1,14 @@
 package com.example.BookMyShowBackend;
 
+import com.example.BookMyShowBackend.Controllers.UserController;
 import com.example.BookMyShowBackend.Model.*;
 import com.example.BookMyShowBackend.MultiThreading.BookingServiceRunMethod;
 import com.example.BookMyShowBackend.Repositories.*;
 import com.example.BookMyShowBackend.Repositories.InMemoryRepositories.*;
 import com.example.BookMyShowBackend.Services.BookingService;
 import com.example.BookMyShowBackend.Services.ServicesImpl.BookingServiceImpl;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.example.BookMyShowBackend.Services.ServicesImpl.UserServiceImpl;
+import com.example.BookMyShowBackend.Services.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -28,10 +30,17 @@ public class BookMyShowBackendApplication {
 		ShowRepository showRepository = new InMemoryShowRepository();
 		ShowSeatRepository showSeatRepository = new InMemoryShowSeatRepository();
 		BookingRepository bookingRepository = new InMemoryBookingRepository();
-		SeatTypeRepository seatTypeRepository = new InMemorySeatType();
+		SeatTypeRepository seatTypeRepository = new InMemorySeatTypeRepository();
 		ShowSeatTypeRepository showSeatTypeRepository = new InMemoryShowSeatTypeRepository();
 
+
+		UserService userService = new UserServiceImpl(userRepository);
+
+
 		BookingService bookingService = new BookingServiceImpl(userRepository, screenRepository, theaterRepository, movieRepository, seatRepository, showRepository, showSeatRepository, bookingRepository, seatTypeRepository, showSeatTypeRepository);
+
+
+		UserController userController = new UserController(userService);
 
 		//User
 		User user = User.builder().name("Nikhil").build();

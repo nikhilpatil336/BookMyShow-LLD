@@ -1,0 +1,21 @@
+user
+    - create
+    - delete
+
+
+Booking
+cast
+city
+credit card
+Debit card
+UPI
+Movie
+Payment
+Screen
+Seat
+Show
+ShowSeat
+ShowSeatType
+Theater
+    - create
+
