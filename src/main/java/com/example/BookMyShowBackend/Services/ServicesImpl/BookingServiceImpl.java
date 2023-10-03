@@ -54,27 +54,17 @@ public class BookingServiceImpl implements BookingService
         List<ShowSeat> currentShowSeats = new ArrayList<>();
         double totalPrice = 0;
 
-        for (Long currentshowSeatId : currentShowSeatIds) {
-            boolean result = bookingRepository.lockShowSeat(currentshowSeatId);
-            if(result == false)
-            {
-                bookingRepository.unlockShowSeat(currentShowSeatIds);
-                throw new UserLockedException("Show Seats are already locked");
-            }
-        }
-
         for(Long currentshowSeatId : currentShowSeatIds)
             currentShowSeats.add(showSeatRepository.getShowSeatById(currentshowSeatId));
 
-        for (ShowSeat currentshowSeat : currentShowSeats) {
-            if (currentshowSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE))
-                currentshowSeat.setShowSeatStatus(ShowSeatStatus.LOCKED);
-//            else
-//                throw new RuntimeException("Show Seats are not available");
-        }
-
         for (ShowSeat currentshowSeat : currentShowSeats)
-            showSeatRepository.saveShowSeat(currentshowSeat);
+            if (!currentshowSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE))
+                throw new RuntimeException("Show Seats are not available");
+
+        for (ShowSeat currentshowSeat : currentShowSeats){
+            currentshowSeat.setShowSeatStatus(ShowSeatStatus.LOCKED);
+            showSeatRepository.updateShowSeat(currentshowSeat);
+        }
 
         for(ShowSeat currentshowSeat : currentShowSeats) {
             Seat seat = currentshowSeat.getSeat();
@@ -82,8 +72,6 @@ public class BookingServiceImpl implements BookingService
                 if(seat.getSeatType().equals(currentshowSeatType.getSeatType()))
                     totalPrice += currentshowSeatType.getPrice();
         }
-
-        //Booking booking = Booking.builder().User(user).Show(show).ShowSeats(currentShowSeats).Price(totalPrice).BookingStatus(BookingStatus.PENDING).build();
 
         Booking booking = Booking.builder().user(user).show(show).showSeats(currentShowSeats).price(totalPrice).bookingStatus(BookingStatus.PENDING).build();
         booking.setId(id);

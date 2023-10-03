@@ -27,7 +27,8 @@ public class InMemoryShowSeatRepository implements ShowSeatRepository {
 
     @Override
     public ShowSeat getShowSeatById(Long currentshowSeatId) {
-        return showSeatsMap.get(currentshowSeatId);
+        if (showSeatsMap.containsKey(currentshowSeatId))
+            return showSeatsMap.get(currentshowSeatId);
     }
 
     @Override

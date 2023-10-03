@@ -9,7 +9,4 @@ public interface BookingRepository {
 
     Booking saveBooking(Booking booking);
 
-    boolean lockShowSeat(Long id);
-
-    boolean unlockShowSeat(List<Long> ids);
 }
