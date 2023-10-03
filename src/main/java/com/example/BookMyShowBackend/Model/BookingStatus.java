@@ -5,5 +5,5 @@ import lombok.*;
 public enum BookingStatus {
     BOOKED,
     NOT_BOOKED,
-    PENDING
+    PENDING,
 }

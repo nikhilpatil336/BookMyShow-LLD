@@ -37,7 +37,7 @@ public class BookingServiceImpl implements BookingService
     }
 
     @Override
-    public synchronized Booking createBooking(User user, Show show, List<Long> showSeatsId, long id) throws RuntimeException
+    public Booking createBooking(User user, Show show, List<Long> showSeatsId, long id) throws RuntimeException
     {
         //check if the showseats are available
         // if all showseat available -> change the status to locked
@@ -59,7 +59,7 @@ public class BookingServiceImpl implements BookingService
 
         for (ShowSeat currentshowSeat : currentShowSeats)
             if (!currentshowSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE))
-                throw new RuntimeException("Show Seats are not available");
+                return Booking.builder().bookingStatus(BookingStatus.NOT_BOOKED).build();
 
         for (ShowSeat currentshowSeat : currentShowSeats){
             currentshowSeat.setShowSeatStatus(ShowSeatStatus.LOCKED);

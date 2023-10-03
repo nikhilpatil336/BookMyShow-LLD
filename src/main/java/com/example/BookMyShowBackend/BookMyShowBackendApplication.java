@@ -172,18 +172,28 @@ public class BookMyShowBackendApplication {
 		//Executor Service
 		ExecutorService e = Executors.newCachedThreadPool();
 
-
-		Future<Booking> booking = e.submit(new BookingServiceRunMethod(bookingService, user, show, showSeatsId, 1L));
 		Future<Booking> booking2 = e.submit(new BookingServiceRunMethod(bookingService, user, show, showSeatsId1, 2L));
+		Future<Booking> booking = e.submit(new BookingServiceRunMethod(bookingService, user, show, showSeatsId, 1L));
 
-		ShowSeat showSeat = booking.get().getShowSeats().get(0);
+		//ShowSeat showSeat = booking.get().getShowSeats().get(0);
 
-		System.out.println(booking.get().getId());
-		System.out.println(booking.get().getUser());
-		System.out.println(booking.get().getShow());
+		if(booking.get().getBookingStatus().equals(BookingStatus.NOT_BOOKED))
+			System.out.println("Booking for 1st is not done");
+		else
+			System.out.println("Booking for 1st is done");
 
-		System.out.println(booking2.get().getId());
-		System.out.println(booking2.get().getUser());
-		System.out.println(booking2.get().getShow());
+		if(booking2.get().getBookingStatus().equals(BookingStatus.NOT_BOOKED))
+			System.out.println("Booking for 2nd is not done");
+		else
+			System.out.println("Booking for 2nd is done");
+
+
+//		System.out.println(booking.get().getId());
+//		System.out.println(booking.get().getUser());
+//		System.out.println(booking.get().getShow());
+//
+//		System.out.println(booking2.get().getId());
+//		System.out.println(booking2.get().getUser());
+//		System.out.println(booking2.get().getShow());
 	}
 }
