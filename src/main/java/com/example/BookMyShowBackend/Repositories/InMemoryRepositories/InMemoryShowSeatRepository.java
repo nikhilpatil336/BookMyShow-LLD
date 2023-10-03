@@ -29,6 +29,8 @@ public class InMemoryShowSeatRepository implements ShowSeatRepository {
     public ShowSeat getShowSeatById(Long currentshowSeatId) {
         if (showSeatsMap.containsKey(currentshowSeatId))
             return showSeatsMap.get(currentshowSeatId);
+        else
+            throw new RuntimeException("Show Seat does not exist.");
     }
 
     @Override
