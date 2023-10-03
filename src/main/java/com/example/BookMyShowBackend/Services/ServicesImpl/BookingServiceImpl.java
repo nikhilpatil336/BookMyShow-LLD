@@ -37,7 +37,7 @@ public class BookingServiceImpl implements BookingService
     }
 
     @Override
-    public Booking createBooking(User user, Show show, List<Long> showSeatsId, long id) throws RuntimeException
+    public synchronized Booking createBooking(User user, Show show, List<Long> showSeatsId, long id) throws RuntimeException
     {
         //check if the showseats are available
         // if all showseat available -> change the status to locked
