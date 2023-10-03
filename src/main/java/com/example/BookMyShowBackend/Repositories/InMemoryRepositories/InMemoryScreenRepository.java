@@ -13,6 +13,7 @@ public class InMemoryScreenRepository implements ScreenRepository {
 
     @Override
     public Screen saveScreen(Screen screen) {
-        return screenMap.put(screen.getId(), screen);
+        screenMap.put(screen.getId(), screen);
+        return screenMap.get(screen.getId());
     }
 }

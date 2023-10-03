@@ -10,6 +10,10 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     private CreditCardRepository creditCardRepository;
 
+    public CreditCardServiceImpl (CreditCardRepository creditCardRepository){
+        this.creditCardRepository = creditCardRepository;
+    }
+
     @Override
     public CreditCard save(CreditCard creditCard) {
         return creditCardRepository.saveCreditCard(creditCard);

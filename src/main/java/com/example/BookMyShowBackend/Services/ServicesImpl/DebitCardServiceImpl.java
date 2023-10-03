@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 public class DebitCardServiceImpl implements DebitCardService {
 
     private DebitCardRepository debitCardRepository;
+
+    public DebitCardServiceImpl(DebitCardRepository debitCardRepository) {
+        this.debitCardRepository = debitCardRepository;
+    }
+
     @Override
     public DebitCard save(DebitCard debitCard) {
         return debitCardRepository.saveDebitCard(debitCard);

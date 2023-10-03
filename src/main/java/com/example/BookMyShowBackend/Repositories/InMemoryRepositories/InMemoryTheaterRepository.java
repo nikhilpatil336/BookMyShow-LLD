@@ -12,6 +12,7 @@ public class InMemoryTheaterRepository implements TheaterRepository {
     Map<Long, Theater> theaterMap = new HashMap<>();
     @Override
     public Theater saveTheater(Theater theater) {
-        return theaterMap.put(theater.getId(), theater);
+        theaterMap.put(theater.getId(), theater);
+        return theaterMap.get(theater.getId());
     }
 }

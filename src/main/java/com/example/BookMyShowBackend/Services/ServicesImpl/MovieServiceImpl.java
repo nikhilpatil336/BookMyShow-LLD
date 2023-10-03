@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 public class MovieServiceImpl implements MovieService {
 
     private MovieRepository movieRepository;
+
+    public MovieServiceImpl(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
+    }
+
     @Override
     public Movie saveMovie(Movie movie) {
         return movieRepository.saveMovie(movie);

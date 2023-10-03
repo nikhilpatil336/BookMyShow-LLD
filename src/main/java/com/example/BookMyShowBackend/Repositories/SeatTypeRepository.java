@@ -4,5 +4,5 @@ import com.example.BookMyShowBackend.Model.SeatType;
 
 public interface SeatTypeRepository {
 
-    SeatType save(SeatType seatType);
+    SeatType saveSeatType(SeatType seatType);
 }

@@ -15,12 +15,14 @@ public class InMemoryShowSeatRepository implements ShowSeatRepository {
 
     @Override
     public ShowSeat saveShowSeat(ShowSeat showSeat) {
-        return showSeatsMap.put(showSeat.getId(), showSeat);
+        showSeatsMap.put(showSeat.getId(), showSeat);
+        return showSeatsMap.get(showSeat.getId());
     }
 
     @Override
     public ShowSeat updateShowSeat(ShowSeat showSeat) {
-        return showSeatsMap.put(showSeat.getId(), showSeat);
+        showSeatsMap.put(showSeat.getId(), showSeat);
+        return showSeatsMap.get(showSeat.getId());
     }
 
     @Override

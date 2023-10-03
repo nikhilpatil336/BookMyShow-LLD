@@ -1,14 +1,12 @@
 package com.example.BookMyShowBackend;
 
-import com.example.BookMyShowBackend.Controllers.UserController;
+import com.example.BookMyShowBackend.Controllers.*;
 import com.example.BookMyShowBackend.Model.*;
 import com.example.BookMyShowBackend.MultiThreading.BookingServiceRunMethod;
 import com.example.BookMyShowBackend.Repositories.*;
 import com.example.BookMyShowBackend.Repositories.InMemoryRepositories.*;
-import com.example.BookMyShowBackend.Services.BookingService;
-import com.example.BookMyShowBackend.Services.ServicesImpl.BookingServiceImpl;
-import com.example.BookMyShowBackend.Services.ServicesImpl.UserServiceImpl;
-import com.example.BookMyShowBackend.Services.UserService;
+import com.example.BookMyShowBackend.Services.*;
+import com.example.BookMyShowBackend.Services.ServicesImpl.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -32,15 +30,44 @@ public class BookMyShowBackendApplication {
 		BookingRepository bookingRepository = new InMemoryBookingRepository();
 		SeatTypeRepository seatTypeRepository = new InMemorySeatTypeRepository();
 		ShowSeatTypeRepository showSeatTypeRepository = new InMemoryShowSeatTypeRepository();
+		CastRepository castRepositoy = new InMemoryCastRepository();
+		CityRepository cityRepository = new InMemoryCityRepository();
+		CreditCardRepository creditCardRepository = new InMemoryCreditCardRepository();
+		DebitCardRepository debitCardRepository = new InMemoryDebitCardRepository();
+		UPIRepository upiRepository = new InMemoryUPIRepository();
 
-
+		BookingService bookingService = new BookingServiceImpl(userRepository, screenRepository, theaterRepository, movieRepository, seatRepository, showRepository, showSeatRepository, bookingRepository, seatTypeRepository, showSeatTypeRepository);
+		CastService castService = new CastServiceImpl(castRepositoy);
+		CityService cityService = new CityServiceImpl(cityRepository);
+		CreditCardService creditCardService = new CreditCardServiceImpl(creditCardRepository);
+		DebitCardService debitCardService = new DebitCardServiceImpl(debitCardRepository);
+		MovieService movieService = new MovieServiceImpl(movieRepository);
+		ScreenService screenService = new ScreenServiceImpl(screenRepository);
+		SeatService seatService = new SeatServiceImpl(seatRepository);
+		SeatTypeService seatTypeService = new SeatTypeServiceImpl(seatTypeRepository);
+		ShowSeatService showSeatService = new ShowSeatServiceImpl(showSeatRepository);
+		ShowSeatTypeService showSeatTypeService = new ShowSeatTypeServiceImpl(showSeatTypeRepository);
+		ShowService showService = new ShowServiceImpl(showRepository);
+		TheaterService theaterService = new TheaterServiceImpl(theaterRepository);
+		UPIService upiService = new UPIServiceImpl(upiRepository);
 		UserService userService = new UserServiceImpl(userRepository);
 
 
-		BookingService bookingService = new BookingServiceImpl(userRepository, screenRepository, theaterRepository, movieRepository, seatRepository, showRepository, showSeatRepository, bookingRepository, seatTypeRepository, showSeatTypeRepository);
-
-
+		BookingController bookingController = new BookingController(bookingService);
+		CastController castController = new CastController(castService);
+		CityController cityController = new CityController(cityService);
+		CreditCardController creditCardController = new CreditCardController(creditCardService);
+		DebitCardController debitCardController = new DebitCardController(debitCardService);
+		MovieController movieController = new MovieController(movieService);
+		ScreenController screenController = new ScreenController(screenService);
+		SeatController seatController = new SeatController(seatService);
+		SeatTypeController seatTypeController = new SeatTypeController(seatTypeService);
+		ShowSeatController showSeatController = new ShowSeatController(showSeatService);
+		ShowController showController = new ShowController(showService);
+		TheaterController theaterController = new TheaterController(theaterService);
+		UPIController upiController = new UPIController(upiService);
 		UserController userController = new UserController(userService);
+
 
 		//User
 		User user = User.builder().name("Nikhil").build();
@@ -70,27 +97,27 @@ public class BookMyShowBackendApplication {
 		//SeatType
 		SeatType seatType1 = SeatType.builder().theater(theater).seatType("Gold").build();
 		seatType1.setId(1);
-		seatTypeRepository.save(seatType1);
+		seatTypeRepository.saveSeatType(seatType1);
 		SeatType seatType2 = SeatType.builder().theater(theater).seatType("Silver").build();
 		seatType2.setId(2);
-		seatTypeRepository.save(seatType2);
+		seatTypeRepository.saveSeatType(seatType2);
 		List<SeatType> seatTypes = List.of(seatType1, seatType2);
 
 
 		//Seat
 		Seat seat1 = Seat.builder().seatNumber(1).seatType(seatType1).build();
 		seat1.setId(1);
-		seatRepository.save(seat1);
+		seatRepository.saveSeat(seat1);
 		Seat seat2 = Seat.builder().seatNumber(2).seatType(seatType1).build();
 		seat2.setId(2);
-		seatRepository.save(seat2);
+		seatRepository.saveSeat(seat2);
 
 		Seat seat3 = Seat.builder().seatNumber(3).seatType(seatType2).build();
 		seat3.setId(3);
-		seatRepository.save(seat3);
+		seatRepository.saveSeat(seat3);
 		Seat seat4 = Seat.builder().seatNumber(4).seatType(seatType2).build();
 		seat4.setId(4);
-		seatRepository.save(seat4);
+		seatRepository.saveSeat(seat4);
 
 		List<Seat> seats = List.of(seat1, seat2, seat3, seat4);
 
@@ -121,10 +148,10 @@ public class BookMyShowBackendApplication {
 		//ShowSeatType
 		ShowSeatType showSeatType1 = ShowSeatType.builder().seatType(seatType1).price(200).build();
 		showSeatType1.setId(1);
-		showSeatTypeRepository.save(showSeatType1);
+		showSeatTypeRepository.saveShowSeatType(showSeatType1);
 		ShowSeatType showSeatType2 = ShowSeatType.builder().seatType(seatType2).price(100).build();
 		showSeatType2.setId(2);
-		showSeatTypeRepository.save(showSeatType2);
+		showSeatTypeRepository.saveShowSeatType(showSeatType2);
 		List<ShowSeatType> showSeatTypes = List.of(showSeatType1, showSeatType2);
 
 
@@ -144,6 +171,7 @@ public class BookMyShowBackendApplication {
 
 		//Executor Service
 		ExecutorService e = Executors.newCachedThreadPool();
+
 
 		Future<Booking> booking = e.submit(new BookingServiceRunMethod(bookingService, user, show, showSeatsId, 1L));
 		Future<Booking> booking2 = e.submit(new BookingServiceRunMethod(bookingService, user, show, showSeatsId1, 2L));

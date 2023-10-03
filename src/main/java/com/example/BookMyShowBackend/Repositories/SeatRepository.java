@@ -4,5 +4,5 @@ import com.example.BookMyShowBackend.Model.Seat;
 
 public interface SeatRepository {
 
-    Seat save(Seat seat);
+    Seat saveSeat(Seat seat);
 }

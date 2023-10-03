@@ -3,7 +3,6 @@ package com.example.BookMyShowBackend.Services.ServicesImpl;
 import com.example.BookMyShowBackend.Exceptions.UserLockedException;
 import com.example.BookMyShowBackend.Model.*;
 import com.example.BookMyShowBackend.Repositories.*;
-import com.example.BookMyShowBackend.Repositories.InMemoryRepositories.*;
 import com.example.BookMyShowBackend.Services.BookingService;
 import org.springframework.stereotype.Service;
 

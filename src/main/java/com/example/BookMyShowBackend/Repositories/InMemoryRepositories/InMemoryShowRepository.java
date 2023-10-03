@@ -11,6 +11,7 @@ public class InMemoryShowRepository implements ShowRepository {
     Map<Long, Show> showMap = new HashMap<>();
     @Override
     public Show saveShow(Show show) {
-        return showMap.put(show.getId(), show);
+        showMap.put(show.getId(), show);
+        return showMap.get(show.getId());
     }
 }

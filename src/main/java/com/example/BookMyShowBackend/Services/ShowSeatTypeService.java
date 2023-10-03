@@ -1,8 +1,8 @@
-package com.example.BookMyShowBackend.Repositories;
+package com.example.BookMyShowBackend.Services;
 
 import com.example.BookMyShowBackend.Model.ShowSeatType;
 
-public interface ShowSeatTypeRepository {
+public interface ShowSeatTypeService {
 
     ShowSeatType saveShowSeatType(ShowSeatType showSeatType);
 }

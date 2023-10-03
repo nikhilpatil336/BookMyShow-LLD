@@ -11,7 +11,8 @@ public class InMemorySeatTypeRepository implements SeatTypeRepository {
 
     Map<Long, SeatType> seatTypeMap = new HashMap<>();
     @Override
-    public SeatType save(SeatType seatType) {
-        return seatTypeMap.put(seatType.getId(), seatType);
+    public SeatType saveSeatType(SeatType seatType) {
+        seatTypeMap.put(seatType.getId(), seatType);
+        return seatTypeMap.get(seatType.getId());
     }
 }
