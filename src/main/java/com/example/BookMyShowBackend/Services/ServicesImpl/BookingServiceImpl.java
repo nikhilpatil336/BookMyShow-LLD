@@ -49,33 +49,35 @@ public class BookingServiceImpl implements BookingService
         //save the booking object in repo
 
         //return the booking object
+        synchronized (show)
+        {
+            List<Long> currentShowSeatIds = new ArrayList<>(showSeatsId);
+            List<ShowSeat> currentShowSeats = new ArrayList<>();
+            double totalPrice = 0;
 
-        List<Long> currentShowSeatIds = new ArrayList<>(showSeatsId);
-        List<ShowSeat> currentShowSeats = new ArrayList<>();
-        double totalPrice = 0;
+            for(Long currentshowSeatId : currentShowSeatIds)
+                currentShowSeats.add(showSeatRepository.getShowSeatById(currentshowSeatId));
 
-        for(Long currentshowSeatId : currentShowSeatIds)
-            currentShowSeats.add(showSeatRepository.getShowSeatById(currentshowSeatId));
+            for (ShowSeat currentshowSeat : currentShowSeats)
+                if (!currentshowSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE))
+                    return Booking.builder().bookingStatus(BookingStatus.NOT_BOOKED).build();
 
-        for (ShowSeat currentshowSeat : currentShowSeats)
-            if (!currentshowSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE))
-                return Booking.builder().bookingStatus(BookingStatus.NOT_BOOKED).build();
+            for (ShowSeat currentshowSeat : currentShowSeats){
+                currentshowSeat.setShowSeatStatus(ShowSeatStatus.LOCKED);
+                showSeatRepository.updateShowSeat(currentshowSeat);
+            }
 
-        for (ShowSeat currentshowSeat : currentShowSeats){
-            currentshowSeat.setShowSeatStatus(ShowSeatStatus.LOCKED);
-            showSeatRepository.updateShowSeat(currentshowSeat);
+            for(ShowSeat currentshowSeat : currentShowSeats) {
+                Seat seat = currentshowSeat.getSeat();
+                for (ShowSeatType currentshowSeatType : show.getShowSeatTypes())
+                    if(seat.getSeatType().equals(currentshowSeatType.getSeatType()))
+                        totalPrice += currentshowSeatType.getPrice();
+            }
+
+            Booking booking = Booking.builder().user(user).show(show).showSeats(currentShowSeats).price(totalPrice).bookingStatus(BookingStatus.PENDING).build();
+            booking.setId(id);
+
+            return bookingRepository.saveBooking(booking);
         }
-
-        for(ShowSeat currentshowSeat : currentShowSeats) {
-            Seat seat = currentshowSeat.getSeat();
-            for (ShowSeatType currentshowSeatType : show.getShowSeatTypes())
-                if(seat.getSeatType().equals(currentshowSeatType.getSeatType()))
-                    totalPrice += currentshowSeatType.getPrice();
-        }
-
-        Booking booking = Booking.builder().user(user).show(show).showSeats(currentShowSeats).price(totalPrice).bookingStatus(BookingStatus.PENDING).build();
-        booking.setId(id);
-
-        return bookingRepository.saveBooking(booking);
     }
 }
