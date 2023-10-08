@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService
@@ -54,10 +55,13 @@ public class BookingServiceImpl implements BookingService
         double totalPrice = 0, count = 0;
         boolean isLocked = true, isAllLocked = true;
 
+        //how to handle a deadLock situation (Best way to handle deadLock is to sort the showSeats and then do the operations)
+        List<Long> sortedShowSeatsIds = showSeatsId.stream().sorted().collect(Collectors.toList());
+
         //locking all show seats
-        for(Long currentshowSeatId : currentShowSeatIds)
+        for(Long sortShowSeatId : sortedShowSeatsIds)
         {
-            isLocked = showSeatRepository.getLockOverShowSeats(currentshowSeatId);
+            isLocked = showSeatRepository.getLockOverShowSeats(sortShowSeatId);
             if(!isLocked)
             {
                 isAllLocked = false;
