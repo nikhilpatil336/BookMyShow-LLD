@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class InMemoryBookingRepository implements BookingRepository {
     Map<Long, Booking> bookingMap = new HashMap<>();
-    Map<Long, Integer> lockShowSeatMap = new HashMap<>();
     @Override
     public Booking saveBooking(Booking booking) {
         bookingMap.put(booking.getId(), booking);

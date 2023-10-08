@@ -13,4 +13,8 @@ public interface ShowSeatRepository {
     ShowSeat getShowSeatById(Long currentshowSeatId);
 
     List<ShowSeat> getAllShowSeats();
+
+    boolean getLockOverShowSeats(Long showSeatId);
+
+    boolean unlockShowSeats(Long showSeatId);
 }
