@@ -1,6 +1,5 @@
 package com.example.BookMyShowBackend.Services.ServicesImpl;
 
-import com.example.BookMyShowBackend.Exceptions.UserLockedException;
 import com.example.BookMyShowBackend.Model.*;
 import com.example.BookMyShowBackend.Repositories.*;
 import com.example.BookMyShowBackend.Services.BookingService;
@@ -53,7 +52,7 @@ public class BookingServiceImpl implements BookingService
         List<Long> currentShowSeatIds = new ArrayList<>(showSeatsId);
         List<ShowSeat> currentShowSeats = new ArrayList<>();
         double totalPrice = 0, count = 0;
-        boolean isLocked = true, isAllLocked = true;
+        boolean isLocked, isAllLocked = true;
 
         //how to handle a deadLock situation (Best way to handle deadLock is to sort the showSeats and then do the operations)
         List<Long> sortedShowSeatsIds = showSeatsId.stream().sorted().collect(Collectors.toList());
@@ -118,3 +117,38 @@ public class BookingServiceImpl implements BookingService
         return bookingRepository.saveBooking(booking);
     }
 }
+
+
+//if we sync the booking method
+//only one person in entire world can access that method at one time, that will make the application very slow
+
+
+//if we take a lock on show object
+//if 2 person trying to book different ShowSeats of same show at a same time then one person has to wait
+//till the other person completes the booking
+//(in reality this solution is acceptable cause booking will take 4 to 5 seconds, which is acceptable a person can wait that much time)
+//Show 1 -> 1, 2, 3
+//Show 1 -> 4, 5
+//this is not possible at a same time
+
+
+//taking a lock on ShowSeat object
+//we are further imporving the performace of application
+//if 2 person trying to book different ShowSeats of same show at a same time then it is allowed with this approach
+//allowed
+//Show 1 -> 1, 2, 3
+//Show 1 -> 4, 5
+
+//not allowed
+//Show 1 -> 1, 2, 3
+//Show 1 -> 3, 4
+//trying to book same seat at a same time is not allowed
+
+
+//handiling the deadlock situation
+//Show 1 -> 3, 2, 1
+//Show 1 -> 1, 2, 3
+//then person 1 will take lock on 3 first and person 2 will take a lock on seat 1 first
+//and then at the end deadlock will happen and both had to release the resources
+//because of this no one will be able to book the ticket, which is not good
+//to handle this situation, the best solution is to sort the showSeatIds and then do the operations

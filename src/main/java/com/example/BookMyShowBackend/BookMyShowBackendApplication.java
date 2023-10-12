@@ -174,9 +174,8 @@ public class BookMyShowBackendApplication {
 			//Executor Service
 			ExecutorService e = Executors.newCachedThreadPool();
 
-			Future<Booking> booking2 = e.submit(new BookingServiceRunMethod(bookingService, user, show, showSeatsId1, 2L));
 			Future<Booking> booking = e.submit(new BookingServiceRunMethod(bookingService, user, show, showSeatsId, 1L));
-
+			Future<Booking> booking2 = e.submit(new BookingServiceRunMethod(bookingService, user, show, showSeatsId1, 2L));
 
 			//ShowSeat showSeat = booking.get().getShowSeats().get(0);
 

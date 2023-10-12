@@ -17,6 +17,8 @@ public class InMemoryShowSeatRepository implements ShowSeatRepository {
 
     private Map<Long, Integer> lockShowSeatMap = new ConcurrentHashMap<>();
 
+    private Map<Long, String> showSeatLockOwner = new ConcurrentHashMap<>();
+
     @Override
     public ShowSeat saveShowSeat(ShowSeat showSeat) {
         showSeatsMap.put(showSeat.getId(), showSeat);
@@ -56,10 +58,12 @@ public class InMemoryShowSeatRepository implements ShowSeatRepository {
                 else
                 {
                     lockShowSeatMap.put(showSeatId, 1);
+                    showSeatLockOwner.put(showSeatId, Thread.currentThread().getName());
                     return true;
                 }
             }
             lockShowSeatMap.put(showSeatId, 1);
+            showSeatLockOwner.put(showSeatId, Thread.currentThread().getName());
             return true;
         }
     }
@@ -67,8 +71,12 @@ public class InMemoryShowSeatRepository implements ShowSeatRepository {
     @Override
     public boolean unlockShowSeats(Long showSeatId) {
         synchronized (showSeatId) {
-            lockShowSeatMap.put(showSeatId, 0);
+            if(showSeatLockOwner.get(showSeatId).equals(Thread.currentThread().getName())) {
+                lockShowSeatMap.put(showSeatId, 0);
+                showSeatLockOwner.remove(showSeatId);
+                return true;
+            }
         }
-        return true;
+        return false;
     }
 }
